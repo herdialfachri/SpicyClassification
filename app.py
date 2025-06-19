@@ -21,9 +21,9 @@ classes = ['Antraknosa', 'Busuk_Buah', 'Lalat_Buah']
 
 # Deskripsi penyakit cabai
 penyakit_cabai_descriptions = {
-    'Antraknosa': 'Antraknosa adalah penyakit cabai setengah busuk menuju busuk.',
-    'Busuk_Buah': 'Busuk Buah merupakan penyakit buah cabai dengan tingkat kebusukan 100%.',
-    'Lalat_Buah': 'Lalat Buah merupakan penyakit buah cabai yang berbentuk rongga bolong-bolong.'
+    'Antraknosa': 'Antraknosa adalah penyakit pada cabai yang disebabkan oleh jamur Colletotrichum spp.. Penyakit ini menyerang buah cabai dan menimbulkan bercak cekung berwarna coklat kehitaman. Jamur ini berkembang pesat pada kondisi lembap dan menyebabkan buah membusuk hingga rontok.',
+    'Busuk_Buah': 'Busuk cabai adalah kondisi pembusukan buah yang disebabkan oleh jamur atau bakteri, seperti Phytophthora capsici. Penyakit ini muncul terutama pada kondisi lembap, membuat buah menjadi lunak, basah, dan berwarna hitam, sehingga tidak layak konsumsi.',
+    'Lalat_Buah': 'Lalat buah merupakan hama dari jenis serangga, biasanya dari genus Bactrocera, yang meletakkan telurnya di dalam buah cabai. Setelah menetas, larva memakan daging buah dari dalam hingga buah membusuk, berlubang, dan jatuh sebelum matang.'
 }
 
 # Halaman utama
@@ -32,6 +32,7 @@ def index():
     prediction = None
     image_path = None
     description = None
+    confidence = None
 
     if request.method == 'POST':
         if 'image' not in request.files:
@@ -57,15 +58,18 @@ def index():
             img_array = np.expand_dims(img_array, axis=0)
             img_array = img_array / 255.0
 
-            # Prediksi
+            # Tambahkan di route index setelah memprediksi
             preds = model.predict(img_array)
             predicted_class = np.argmax(preds[0])
             prediction = classes[predicted_class]
 
+            # Hitung persentase prediksi
+            confidence = float(preds[0][predicted_class]) * 100  # Ubah ke persen
+
             # Ambil deskripsi penyakit
             description = penyakit_cabai_descriptions.get(prediction, "Deskripsi tidak tersedia.")
 
-    return render_template('index.html', prediction=prediction, image_path=image_path, description=description)
+    return render_template('index.html', prediction=prediction, image_path=image_path, description=description, confidence=confidence)
 
 # Jalankan server
 if __name__ == '__main__':

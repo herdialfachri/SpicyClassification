@@ -1,16 +1,21 @@
-/* static/css/index.css */
-
+/* Tetap pakai gaya awalmu */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f9fa;
 }
-.container {
-    max-width: 600px;
-    margin-top: 80px;
+.container-fluid {
+    padding: 20px 40px;
+}
+.custom-box {
     background-color: white;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    /* Hapus height: 100% dan min-height global */
+}
+
+.prediction-box {
+    min-height: 300px; /* Biar kontainer hasil tetap tinggi walau belum ada prediksi */
 }
 .form-label {
     font-weight: 600;
@@ -27,11 +32,11 @@ h1, h2 {
     background-color: #45a049;
 }
 .preview-image {
-    width: 500px;
-    height: 350px;
-    object-fit: cover; /* Biar gambar tetap proporsional dan mengisi kotak */
-    display: block;
-    margin: 20px auto;
+    width: 450px;
+    height: 300px;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto;
 }
